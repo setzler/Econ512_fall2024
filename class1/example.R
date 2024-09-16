@@ -6,7 +6,7 @@ silly_function <- function(x) {
   return(x^3) # it needs to be cubed
 }
 
-silly_function(3)
+silly_function(4)
 
 
 
