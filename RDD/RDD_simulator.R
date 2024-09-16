@@ -5,7 +5,7 @@
 
 # given parameters
 cutoff_parameter = 0.0
-beta_treatment_effect = 10.0
+beta_treatment_effect = 3.0
 N_sample_size = 1000
 
 # simulate the heterogeneous primitives
@@ -31,3 +31,7 @@ gg = ggplot(aes(x=X_running_variable, y=Y_outcome_of_interest), data=the_data_se
 # save the plot
 setwd("~/github/Econ512_fall2024/RDD/")
 ggsave(gg, file="RDD_simulator.pdf", width=8, height=5)
+
+write.csv(the_data_set, file = "RDD_simulator_data.csv", row.names = FALSE)
+
+
