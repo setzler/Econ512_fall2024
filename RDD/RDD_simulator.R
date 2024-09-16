@@ -20,4 +20,14 @@ Y_outcome_of_interest = beta_treatment_effect * D_treatment + epsilon_outcome_un
 library(data.table) # install.packages("data.table")
 the_data_set = data.table( Y_outcome_of_interest, D_treatment, X_running_variable )
 
+# plot the data, X_running_variable on the x-axis and Y_outcome_of_interest on the y-axis, I want to use ggplot2 for this
+library(ggplot2) # install.packages("ggplot2")
+gg = ggplot(aes(x=X_running_variable, y=Y_outcome_of_interest), data=the_data_set) + 
+    geom_point() + 
+    theme_bw(base_size = 16) + 
+    labs(x="Running Variable (X)", y="Outcome of Interest (Y)") + 
+    geom_vline(xintercept = cutoff_parameter)
 
+# save the plot
+setwd("~/github/Econ512_fall2024/RDD/")
+ggsave(gg, file="RDD_simulator.pdf", width=8, height=5)
