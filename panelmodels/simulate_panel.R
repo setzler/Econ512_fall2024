@@ -124,3 +124,32 @@ print(summary(ols_first_stage))
 
 
 
+
+#############################################
+### 3. Simple Autoregression
+#############################################
+
+
+# simulate
+set.seed(123)
+N = 1000
+T = 10
+rho = 0.7
+gamma = 1
+alpha = 0.8
+
+# create a data set
+production_data = data.table(expand.grid(firm_ID = 1:N, year = 1:T))
+production_data = production_data[, eta_current := rnorm(N*T, mean = 0, sd = 1)]
+
+# initialize the AR(1) process at the stationary variance (which was optional)
+stationary_variance = 1/(1 - rho^2)
+production_data[year == 1, epsilon := rnorm(N, mean = 0, sd = sqrt(stationary_variance))]
+for(tt in 2:T){
+    epsilon_data = production_data[, list(firm_ID, year = year + 1, epsilon_lag = epsilon)]
+    production_data = merge(production_data, epsilon_data, by = c("firm_ID", "year"), all.x = TRUE)
+    production_data[year == tt, epsilon := rho*epsilon_lag + eta_current]
+    production_data[, epsilon_lag := NULL] # remove the lag epsilon so we can get the new one on the next loop
+}
+
+
